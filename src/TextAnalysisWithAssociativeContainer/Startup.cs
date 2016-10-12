@@ -61,11 +61,12 @@ namespace TextAnalysisWithAssociativeContainer
 
             app.UseStaticFiles();
 
+            // setup the format for routing
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{NUMTIMES?}"); // NUMTIMES case doesn't matter when matching with action parameter
             });
         }
     }

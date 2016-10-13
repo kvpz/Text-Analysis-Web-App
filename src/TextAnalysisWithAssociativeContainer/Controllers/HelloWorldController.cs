@@ -3,17 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using TextAnalysisLibrary;
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TextAnalysisWithAssociativeContainer.Controllers
 {
+    
     public class HelloWorldController : Controller
     {
         // Get: /HelloWorld/
+        [HttpGet]
         public IActionResult Index() // a controller method
         {
+            WordBench t = new WordBench();
+            string tempStr;
+            t.ReadText("big.txt", out tempStr);
+            Response.WriteAsync(tempStr);
             return View();
         }
 
@@ -25,7 +32,7 @@ namespace TextAnalysisWithAssociativeContainer.Controllers
             //return HtmlEncoder.Default.Encode($"Hello {name}, numTimes: {numTimes}"); // returns string
             ViewData["Message"] = "Hello " + name;
             ViewData["NumTimes"] = numTimes;
-
+            Response.WriteAsync("This is not Console.Writeline()...");
             return View(); // View() will be defined once Welcome.cshtml (the view) is created
         }
 

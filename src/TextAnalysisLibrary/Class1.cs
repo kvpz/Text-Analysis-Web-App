@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using CustomContainers; // OAA<>
 
 namespace TextAnalysisLibrary
 {
@@ -22,7 +23,7 @@ namespace TextAnalysisLibrary
         //alias int DataType;
 
         private int count_;
-        private OAA<string, int> frequency_;
+        private OAA<string, int, Predicate<int>> frequency_;
         private readonly List<string> infiles_;
 
         private static void Wordify(string s) //fsu::String& s);
@@ -34,46 +35,29 @@ namespace TextAnalysisLibrary
         {
             count_ = 0;
             infiles_ = new List<string>();
+            frequency_ = new OAA<string, int, Predicate<int>>();
         }
 
-        public bool ReadText(string fileName, out string tempString) //const fsu::String& infile);
+        /// <summary>
+        /// Read a file and store it in memory.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="tempString"></param>
+        public async Task<string> ReadText(string fileName) //const fsu::String& infile);
         {
-            FileStream inFileStream;
-            tempString = "blank string";
-            try
+            String text;
+            using (StreamReader inFileReader = File.OpenText(fileName))//OpenText(fileName)) StreamReader
             {
-                inFileStream = File.Open(fileName, FileMode.Open);
-
+                text = await inFileReader.ReadToEndAsync(); 
+                infiles_.Add(fileName);
             }
-            catch (FileNotFoundException e)
-            {
-                tempString = e.Message;
-                return false;
-            }
-            
-            StreamReader fileStreamReader = new StreamReader(inFileStream); // works well
-            //tempString = sReader.ReadToEnd();
-            //StringReader stringReader = new StringReader(inFileStream.);
-            infiles_.Add(fileName);
-            uint wordsRead = 0;
-            // str = new StringReader(inFileStream.ToString());
-            string words = new Str;
-            
-            while ( fileStreamReader.BaseStream.CanRead)//!fileStreamReader.EndOfStream )//&& (words = fileStreamReader.ReadLine()) != null)
-            {
-
-                words = fileStreamReader.ReadLine();
-                if(words.Length < 1)
-                tempString = words;
-
-            }
-            //fileStreamReader.Dispose();
-            //inFileStream.Dispose();
-            // fileStreamReader.Dispose();
-            
-            return true;
+            return text;
         }
 
+        public void CleanText()
+        {
+            
+        }
         /*
   bool WriteReport(const fsu::String& outfile, unsigned short kw = 15, unsigned short dw = 15,
                    std::ios_base::fmtflags kf = std::ios_base::left, // key justify

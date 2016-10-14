@@ -1,26 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TextAnalysisLibrary;
+
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TextAnalysisWithAssociativeContainer.Controllers
 {
-    
+
     public class HelloWorldController : Controller
     {
         // Get: /HelloWorld/
         [HttpGet]
-        public IActionResult Index() // a controller method
+        public async Task<IActionResult> Index() // a controller method
         {
             WordBench t = new WordBench();
-            string tempStr;
-            t.ReadText("big.txt", out tempStr);
-            Response.WriteAsync(tempStr);
+            Task<string> teststring = null;
+            //Parallel.Invoke(() => t.ReadText("big.txt"));
+            try
+            {
+                teststring = t.ReadText("big.txt");
+            }
+            catch (Exception)
+            {
+                await Task.WhenAll(teststring);
+                await Response.WriteAsync("OMG an error");
+            }
+            finally
+            {
+                await Task.WhenAll(teststring);
+                await Response.WriteAsync(teststring.Result);
+            }
+            //await Response.WriteAsync(tempStr);
+                //await Response.WriteAsync(tempStr).ConfigureAwait(false);
+            
             return View();
         }
 

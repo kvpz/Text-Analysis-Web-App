@@ -11,22 +11,11 @@ namespace TextAnalysisLibrary
 {
     public class WordBench
     {
-        /*
-        typedef fsu::String             KeyType;
-        typedef size_t                  DataType;
-
-  size_t count_;  //number of valid words read
-        fsu::OAA<KeyType, DataType> frequency_;
-        fsu::List<fsu::String> infiles_;
-        */
-        //alias string KeyType;
-        //alias int DataType;
-
         private int count_;
         private OAA<string, int, Predicate<int>> frequency_;
         private readonly List<string> infiles_;
 
-        private static void Wordify(string s) //fsu::String& s);
+        private static void Wordify(string s) 
         {
 
         }
@@ -43,13 +32,13 @@ namespace TextAnalysisLibrary
         /// </summary>
         /// <param name="fileName"></param>
         /// <param name="tempString"></param>
-        public async Task<string> ReadText(string fileName) //const fsu::String& infile);
+        public async Task<string> ReadText(string fileName) 
         {
             String text;
-            using (StreamReader inFileReader = File.OpenText(fileName))//OpenText(fileName)) StreamReader
+            using (StreamReader inFileReader = File.OpenText(fileName))
             {
                 text = await inFileReader.ReadToEndAsync(); 
-                infiles_.Add(fileName);
+             //   infiles_.Add(fileName);
             }
             return text;
         }
@@ -58,16 +47,5 @@ namespace TextAnalysisLibrary
         {
             
         }
-        /*
-  bool WriteReport(const fsu::String& outfile, unsigned short kw = 15, unsigned short dw = 15,
-                   std::ios_base::fmtflags kf = std::ios_base::left, // key justify
-                   std::ios_base::fmtflags df = std::ios_base::right // data justify
-                     ) const;
-        void ShowSummary() const;
-        void ClearData();
-        */
-        
-
-
     }
 }

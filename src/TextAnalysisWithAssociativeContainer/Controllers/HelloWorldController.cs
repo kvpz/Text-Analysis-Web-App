@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.Encodings.Web;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,20 +28,15 @@ namespace TextAnalysisWithAssociativeContainer.Controllers
             try
             {
                 teststring = t.ReadText("big.txt");
+                Debug.WriteLine("IN INDEX() TRY BLOCK: " + teststring.Status);
             }
             catch (Exception)
             {
-                await Task.WhenAll(teststring);
-                await Response.WriteAsync("OMG an error");
+                //await Task.WhenAll(teststring);
+                Debug.WriteLine("In the catch block for Index()");
             }
-            finally
-            {
-                await Task.WhenAll(teststring);
-                await Response.WriteAsync(teststring.Result);
-            }
-            //await Response.WriteAsync(tempStr);
-                //await Response.WriteAsync(tempStr).ConfigureAwait(false);
             
+            Response.WriteAsync(teststring.Result.Trim().Remove(0, 5000000));
             return View();
         }
 

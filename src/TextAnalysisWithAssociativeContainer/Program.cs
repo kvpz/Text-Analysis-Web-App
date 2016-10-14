@@ -17,7 +17,7 @@ namespace TextAnalysisWithAssociativeContainer
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
-
+            
             host.Run();
         }
     }
